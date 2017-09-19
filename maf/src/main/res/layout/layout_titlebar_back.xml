@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.maf.views.TitleBarView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_title_background"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/title_height"
+    android:background="@color/titlebar_background">
+
+    <!-- 返回按钮 -->
+    <ImageView
+        android:id="@+id/image_title_back"
+        style="@style/TitleIconStyle"
+        android:src="@drawable/title_bar_back" />
+
+    <!-- 界面标题 -->
+    <TextView
+        android:id="@+id/text_product_title"
+        style="@style/TitleTextStyle"
+        android:layout_centerHorizontal="true" />
+    <!-- 显示菜单 -->
+    <ImageView
+        android:id="@+id/image_title_menu"
+        style="@style/TitleIconStyle"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/title_more"
+        android:visibility="gone" />
+    <!-- 显示菜单左边的按钮-->
+    <ImageView
+        android:id="@+id/image_title_menu_left"
+        style="@style/TitleIconStyle"
+        android:layout_alignParentRight="false"
+        android:layout_toLeftOf="@id/image_title_menu"
+        android:src="@drawable/menu_delete"
+        android:visibility="gone" />
+    <!-- 右边按钮 -->
+    <TextView
+        android:id="@+id/text_title_right"
+        style="@style/TitleIconRightStyle"
+        android:text="历史号码"
+        android:visibility="gone" />
+</com.maf.views.TitleBarView>
