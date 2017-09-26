@@ -1,6 +1,7 @@
 package com.zgmao.game.application;
 
 import com.maf.application.BaseApplication;
+import com.zgmao.game.utils.AnimationUtil;
 
 /**
  * 项目名称：MGame
@@ -18,5 +19,6 @@ public class GameApplication extends BaseApplication
     public void onCreate()
     {
         super.onCreate();
+        AnimationUtil.init(this);
     }
 }

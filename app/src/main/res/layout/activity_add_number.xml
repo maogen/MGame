@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="right"
+        android:orientation="horizontal">
+
+        <!-- 得分 -->
+        <LinearLayout
+            style="@style/ScoreView">
+
+            <TextView
+                style="@style/ScoreTitle"
+                android:text="SCORE" />
+
+            <TextView
+                android:id="@+id/text_score"
+                style="@style/ScoreContent" />
+        </LinearLayout>
+        <!-- 最高分 -->
+        <LinearLayout
+            style="@style/ScoreView">
+
+            <TextView
+                style="@style/ScoreTitle"
+                android:text="BEST" />
+
+            <TextView
+                android:id="@+id/text_best_score"
+                style="@style/ScoreContent" />
+        </LinearLayout>
+    </LinearLayout>
+    <!-- 方块区域 -->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_cube"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@drawable/shape_gray_bg"
+        android:padding="3dp" />
+</LinearLayout>

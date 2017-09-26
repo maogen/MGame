@@ -5,12 +5,21 @@
     <color name="colorAccent">#FF4081</color>
 
     <!--  系统颜色 -->
+    <!-- 白色 -->
+    <color name="white">#FFFFFF</color>
+    <!-- 灰色 -->
+    <color name="black">#000000</color>
+
     <!-- 最浅的黄色 -->
     <color name="yellow_one">#D8BC9D</color>
     <!-- 中度的黄色 -->
     <color name="yellow_two">#D8A571</color>
     <!-- 黄色 -->
     <color name="yellow_three">#D18B46</color>
+    <!-- 黄色 -->
+    <color name="yellow_four">#CE761C</color>
+    <!-- 黄色 -->
+    <color name="yellow_five">#B25A03</color>
     <!-- 标准的黄色 -->
     <color name="yellow">#DEAF15</color>
     <!-- 最浅的红色 -->
@@ -19,4 +28,12 @@
     <color name="red_two">#A74331</color>
     <!-- 红色 -->
     <color name="red_three">#AF2912</color>
+    <!-- 红色 -->
+    <color name="red_four">#AA2C15</color>
+    <!-- 红色 -->
+    <color name="red_five">#BC1F03</color>
+    <!-- 灰色背景 -->
+    <color name="gray_bg">#BCAC9F</color>
+    <!--  方块灰色背景 -->
+    <color name="gray_cube_bg">#CCC0B4</color>
 </resources>
