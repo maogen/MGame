@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.zgmao.game.R;
 import com.zgmao.game.adapter.AddNumberAdapter;
 import com.zgmao.game.bean.AddNumberItem;
+import com.zgmao.game.bean.NumberEnum;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,5 +98,36 @@ public class AddNumberActivity extends TouchActivity
     public void onMoveRight()
     {
 
+    }
+
+    /**
+     * 随机出现数字
+     * 1：如果是第一次，出现两个数字2；如果不是第一次，随机出现2或者4
+     * 2：出现2的几率是80%
+     * 3：
+     *
+     * @param isFirst 是否是第一次，如果是，产生两个
+     */
+    private void randomNumber(boolean isFirst)
+    {
+        NumberEnum randomNumber;
+        if (isRate(0.8)) {
+            randomNumber = NumberEnum.ONE;
+        } else {
+            randomNumber = NumberEnum.TWO;
+        }
+    }
+
+    /**
+     * @param rate 比例0.0-1.0
+     * @return
+     */
+    private boolean isRate(double rate)
+    {
+        double random = Math.random();
+        if (random < rate) {
+            return true;
+        }
+        return false;
     }
 }
