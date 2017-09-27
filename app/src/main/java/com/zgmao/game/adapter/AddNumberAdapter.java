@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.View;
 
 import com.maf.adapter.BaseRecycleAdapter;
+import com.maf.utils.DensityUtils;
+import com.maf.utils.SPUtils;
 import com.zgmao.game.R;
 import com.zgmao.game.bean.AddNumberItem;
 import com.zgmao.game.bean.NumberEnum;
@@ -46,7 +48,13 @@ public class AddNumberAdapter extends BaseRecycleAdapter<AddNumberItem, AddNumbe
         NumberEnum numberEnum = item.getNumberEnum();
         if (numberEnum != null) {
             // 没有数据，显示默认
-            holder.textContent.setText(numberEnum.getValue());
+            String value = numberEnum.getValue();
+            holder.textContent.setText(value);
+            if (value.length() <= 5) {
+                holder.textContent.setTextSize(24);
+            } else {
+                holder.textContent.setTextSize(18);
+            }
             switch (numberEnum) {
                 // 设置背景颜色
                 case ONE:
