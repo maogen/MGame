@@ -46,8 +46,12 @@ public class AddNumberAdapter extends BaseRecycleAdapter<AddNumberItem, AddNumbe
     {
         AddNumberItem item = list.get(position);
         NumberEnum numberEnum = item.getNumberEnum();
-        if (numberEnum != null) {
-            // 没有数据，显示默认
+        if (numberEnum == null) {
+            // 没有数据
+            holder.textContent.setText("");
+            holder.textContent.setBackgroundResource(R.drawable.shape_gray_cube_bg);
+        } else {
+            // 有数据，显示
             String value = numberEnum.getValue();
             holder.textContent.setText(value);
             if (value.length() <= 5) {

@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.maf.utils.BaseToast;
 import com.maf.utils.Lg;
+import com.maf.utils.SPUtils;
+import com.maf.utils.StringUtils;
 import com.zgmao.game.R;
 import com.zgmao.game.adapter.AddNumberAdapter;
 import com.zgmao.game.bean.AddNumberItem;
@@ -43,6 +45,13 @@ public class AddNumberActivity extends TouchActivity
     // 数字列表设配器
     private AddNumberAdapter addNumberAdapter;
 
+    // 当前分数
+    private long currentScore;
+    // 历史最好分数
+    private long bestScore;
+    // 保存历史最好分数key
+    private final String BEST_SCORE_KEY = "BEST_SCORE";
+
     @Override
     protected int getLayoutResId()
     {
@@ -52,8 +61,13 @@ public class AddNumberActivity extends TouchActivity
     @Override
     protected void initView()
     {
+        // 当前分数
         text_score = (TextView) findViewById(R.id.text_score);
+        // 获取历史最好分数
+        bestScore = (Long) SPUtils.get(mContext, BEST_SCORE_KEY, new Long(0));
         text_best_score = (TextView) findViewById(R.id.text_best_score);
+        text_best_score.setText(String.valueOf(bestScore));
+
         recycler_cube = (RecyclerView) findViewById(R.id.recycler_cube);
         recycler_cube.setLayoutManager(new GridLayoutManager(mContext, 4));
         numberList = new ArrayList<>();
@@ -119,6 +133,25 @@ public class AddNumberActivity extends TouchActivity
     }
 
     /**
+     * 加分
+     *
+     * @param numberEnum
+     */
+    private void addScore(NumberEnum numberEnum)
+    {
+        long addScore = numberEnum.getNumber();
+        currentScore = currentScore + addScore;
+        text_score.setText(String.valueOf(currentScore));
+        if (currentScore > bestScore) {
+            // 当前分数大于最好分数
+            bestScore = currentScore;
+            text_best_score.setText(String.valueOf(bestScore));
+            SPUtils.put(mContext, BEST_SCORE_KEY, bestScore);
+        }
+
+    }
+
+    /**
      * 合并数字
      *
      * @param direction 方向 0-上；1-下；2-左；3-右
@@ -128,29 +161,31 @@ public class AddNumberActivity extends TouchActivity
         int[][] lineDirection = {{0, 1, 2, 3}, {4, 5, 6, 7}, {8, 9, 10, 11}, {12, 13, 14, 15}};
         if (direction == 0) {
             // 上
-            lineDirection = new int[][]{{0, 4, 8, 12}, {1, 5, 9, 13}, {2, 6, 10, 14}, {3, 7, 11, 15}};
+            lineDirection = new int[][]{{12, 8, 4, 0}, {13, 9, 5, 1}, {14, 10, 6, 2}, {15, 11, 7, 3}};
         } else if (direction == 1) {
             // 下
-            lineDirection = new int[][]{{12, 8, 4, 0}, {13, 9, 5, 1}, {14, 10, 6, 2}, {15, 11, 7, 3}};
+            lineDirection = new int[][]{{0, 4, 8, 12}, {1, 5, 9, 13}, {2, 6, 10, 14}, {3, 7, 11, 15}};
         } else if (direction == 2) {
             // 左
-            lineDirection = new int[][]{{0, 1, 2, 3}, {4, 5, 6, 7}, {8, 9, 10, 11}, {12, 13, 14, 15}};
+            lineDirection = new int[][]{{3, 2, 1, 0}, {7, 6, 5, 4}, {11, 10, 9, 8}, {15, 14, 13, 12}};
         } else if (direction == 3) {
             // 右
-            lineDirection = new int[][]{{3, 2, 1, 0}, {7, 6, 5, 4}, {11, 10, 9, 8}, {15, 14, 13, 12}};
+            lineDirection = new int[][]{{0, 1, 2, 3}, {4, 5, 6, 7}, {8, 9, 10, 11}, {12, 13, 14, 15}};
         }
         for (int i = 0; i < lineDirection.length; i++) {
             int[] itemLine = lineDirection[i];
             // 循环执行
             for (int number = 0; number < itemLine.length; number++) {
                 for (int j = 0; j < itemLine.length - 1; j++) {
-                    AddNumberItem addNumberItemOne = numberList.get(itemLine[j]);// 第一个item
-                    AddNumberItem addNumberItemTwo = numberList.get(itemLine[j + 1]);// 第二个
+                    int indexOne = itemLine[j];
+                    int indexTwo = itemLine[j + 1];
+                    AddNumberItem addNumberItemOne = numberList.get(indexOne);// 第一个item
+                    AddNumberItem addNumberItemTwo = numberList.get(indexTwo);// 第二个
 
-                    if (addNumberItemOne.getNumberEnum() == null) {
+                    if (addNumberItemOne.getNumberEnum() != null && addNumberItemTwo.getNumberEnum() == null) {
                         // 第一个为null，将第二个移动到第一个位置
-                        addNumberItemOne.setNumberEnum(addNumberItemTwo.getNumberEnum());
-                        addNumberItemTwo.setNumberEnum(null);
+                        addNumberItemTwo.setNumberEnum(addNumberItemOne.getNumberEnum());
+                        addNumberItemOne.setNumberEnum(null);
                     } else if (addNumberItemOne.getNumberEnum() == addNumberItemTwo.getNumberEnum()) {
                         // 第一个第二个相等，相加
                         NumberEnum numberOne = addNumberItemOne.getNumberEnum();
@@ -160,7 +195,9 @@ public class AddNumberActivity extends TouchActivity
                         for (int k = 0; k < numberEnumArray.length - 1; k++) {
                             NumberEnum kEnum = numberEnumArray[k];
                             if (numberOne == kEnum) {
+                                // 前后两个数一样，得到相加之后的那个数
                                 numberResult = numberEnumArray[k + 1];
+                                addScore(numberResult);
                                 break;
                             }
                         }
@@ -224,7 +261,7 @@ public class AddNumberActivity extends TouchActivity
             return false;
         }
         int index = randomColumn(row);
-//        Lg.d("出现在第" + index + "的位置");
+        Lg.d("出现在第" + index + "的位置");
         if (index == -1) {
             return false;
         }
