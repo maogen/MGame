@@ -2,18 +2,20 @@ package com.zgmao.game.activity;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
-import com.maf.utils.BaseToast;
+import com.google.gson.reflect.TypeToken;
+import com.maf.git.GsonUtils;
 import com.maf.utils.Lg;
 import com.maf.utils.SPUtils;
-import com.maf.utils.StringUtils;
 import com.zgmao.game.R;
 import com.zgmao.game.adapter.AddNumberAdapter;
 import com.zgmao.game.bean.AddNumberItem;
 import com.zgmao.game.bean.NumberEnum;
+import com.zgmao.game.dialog.GameOverDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,11 @@ public class AddNumberActivity extends TouchActivity
     private long bestScore;
     // 保存历史最好分数key
     private final String BEST_SCORE_KEY = "BEST_SCORE";
+    // 保存上次应用退出时的界面
+    private final String LAST_GAME_KEY = "LAST_GAME_KEY";
+
+    // 游戏结束对话框
+    private GameOverDialog gameOverDialog;
 
     @Override
     protected int getLayoutResId()
@@ -77,6 +84,8 @@ public class AddNumberActivity extends TouchActivity
         }
         addNumberAdapter = new AddNumberAdapter(mContext, numberList);
         recycler_cube.setAdapter(addNumberAdapter);
+
+        gameOverDialog = new GameOverDialog(mContext);
     }
 
     @Override
@@ -91,15 +100,55 @@ public class AddNumberActivity extends TouchActivity
                 return false;
             }
         });
+        gameOverDialog.setTextOkListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                gameOverDialog.dismiss();
+                for (int i = 0; i < numberList.size(); i++) {
+                    numberList.get(i).setNumberEnum(null);
+                }
+                addNumberAdapter.notifyDataSetChanged();
+                // 初始出现两次数字
+                int indexOne = randomNumber(true);
+                addNumberAdapter.notifyItemInserted(indexOne);
+                int indexTwo = randomNumber(true);
+                addNumberAdapter.notifyItemInserted(indexTwo);
+            }
+        });
     }
 
     @Override
     protected void initValue()
     {
+        restartGame();
+    }
+
+    /**
+     * 恢复上次退出的游戏
+     */
+    private void restartGame()
+    {
+        String lastGameStr = (String) SPUtils.get(mContext, LAST_GAME_KEY, "");
+        if (!TextUtils.isEmpty(lastGameStr)) {
+            List<AddNumberItem> tempNumberList = GsonUtils.stringToGson(lastGameStr, new TypeToken<List<AddNumberItem>>()
+            {
+            });
+            if (tempNumberList != null && tempNumberList.size() == numberList.size()) {
+                // 回复
+                for (int i = 0; i < numberList.size(); i++) {
+                    numberList.get(i).setNumberEnum(tempNumberList.get(i).getNumberEnum());
+                }
+                addNumberAdapter.notifyDataSetChanged();
+                return;
+            }
+        }
         // 初始出现两次数字
-        randomNumber(true);
-        randomNumber(true);
-        addNumberAdapter.notifyDataSetChanged();
+        int indexOne = randomNumber(true);
+        addNumberAdapter.notifyItemInserted(indexOne);
+        int indexTwo = randomNumber(true);
+        addNumberAdapter.notifyItemInserted(indexTwo);
     }
 
     @Override
@@ -151,6 +200,30 @@ public class AddNumberActivity extends TouchActivity
 
     }
 
+
+    /**
+     * 合并，并且显示下次数字
+     */
+    private void showNumber(int direction)
+    {
+        addNumber(direction);
+        addNumberAdapter.notifyDataSetChanged();
+        int successIndex = randomNumber(false);
+        if (successIndex != -1) {
+//            Lg.d("出现数字");
+            addNumberAdapter.notifyItemInserted(successIndex);
+        } else if (isGameOver()) {
+//            Lg.d("游戏结束");
+//            BaseToast.makeTextShort("游戏结束");
+            gameOverDialog.showDialog(getCurrentFocus());
+        }
+    }
+
+    /**
+     * 判断两个数字相加时，如果遇到第二个索引为null，则第二个索引往后移动一位，或者在移动空格的时候，遇到空格一样要后移动一位
+     */
+    private int spaceIndex;
+
     /**
      * 合并数字
      *
@@ -172,58 +245,75 @@ public class AddNumberActivity extends TouchActivity
             // 右
             lineDirection = new int[][]{{0, 1, 2, 3}, {4, 5, 6, 7}, {8, 9, 10, 11}, {12, 13, 14, 15}};
         }
+        // 执行数字相加判断逻辑
         for (int i = 0; i < lineDirection.length; i++) {
             int[] itemLine = lineDirection[i];
-            // 循环执行
-            for (int number = 0; number < itemLine.length; number++) {
-                for (int j = 0; j < itemLine.length - 1; j++) {
-                    int indexOne = itemLine[j];
-                    int indexTwo = itemLine[j + 1];
-                    AddNumberItem addNumberItemOne = numberList.get(indexOne);// 第一个item
-                    AddNumberItem addNumberItemTwo = numberList.get(indexTwo);// 第二个
-
-                    if (addNumberItemOne.getNumberEnum() != null && addNumberItemTwo.getNumberEnum() == null) {
-                        // 第一个为null，将第二个移动到第一个位置
-                        addNumberItemTwo.setNumberEnum(addNumberItemOne.getNumberEnum());
-                        addNumberItemOne.setNumberEnum(null);
-                    } else if (addNumberItemOne.getNumberEnum() == addNumberItemTwo.getNumberEnum()) {
-                        // 第一个第二个相等，相加
-                        NumberEnum numberOne = addNumberItemOne.getNumberEnum();
-                        NumberEnum numberResult = null;
-                        NumberEnum[] numberEnumArray = NumberEnum.values();
-                        // 循环查找符合条件的，然后取出后一个
-                        for (int k = 0; k < numberEnumArray.length - 1; k++) {
-                            NumberEnum kEnum = numberEnumArray[k];
-                            if (numberOne == kEnum) {
-                                // 前后两个数一样，得到相加之后的那个数
-                                numberResult = numberEnumArray[k + 1];
-                                addScore(numberResult);
-                                break;
-                            }
-                        }
-                        if (null != numberResult) {
-                            addNumberItemOne.setNumberEnum(numberResult);
-                            addNumberItemTwo.setNumberEnum(null);
+            // 循环执行，从数组后面，往前面相加
+            spaceIndex = 1;
+            for (int number = itemLine.length - 1; number > 0; ) {
+                if (number - spaceIndex < 0) {
+                    break;
+                }
+                int indexOne = itemLine[number];
+                int indexTwo = itemLine[number - spaceIndex];
+                AddNumberItem addNumberItemOne = numberList.get(indexOne);// 第一个item
+                AddNumberItem addNumberItemTwo = numberList.get(indexTwo);// 第二个
+                if (null == addNumberItemOne.getNumberEnum()) {
+                    // 如果第一个为null，下一个
+                    number--;
+                    spaceIndex = 1;
+                } else if (null == addNumberItemTwo.getNumberEnum()) {
+                    // 如果第二个为null
+                    spaceIndex++;
+                } else if (addNumberItemOne.getNumberEnum() == addNumberItemTwo.getNumberEnum()) {
+                    // 第一个第二个相等，相加
+                    NumberEnum numberOne = addNumberItemOne.getNumberEnum();
+                    NumberEnum numberResult = null;
+                    NumberEnum[] numberEnumArray = NumberEnum.values();
+                    // 循环查找符合条件的，然后取出后一个
+                    for (int k = 0; k < numberEnumArray.length - 1; k++) {
+                        NumberEnum kEnum = numberEnumArray[k];
+                        if (numberOne == kEnum) {
+                            // 前后两个数一样，得到相加之后的那个数
+                            numberResult = numberEnumArray[k + 1];
+                            addScore(numberResult);
+                            break;
                         }
                     }
+                    if (null != numberResult) {
+                        addNumberItemOne.setNumberEnum(numberResult);
+                        addNumberItemTwo.setNumberEnum(null);
+                    }
+                    // 两个数相加之后，直接跳过这两个，执行上上一个
+                    number = number - 2;
+                    spaceIndex = 1;
+                } else {
+                    number--;
+                    spaceIndex = 1;
                 }
             }
-        }
-    }
-
-    /**
-     * 合并，并且显示下次数字
-     */
-    private void showNumber(int direction)
-    {
-        addNumber(direction);
-        boolean isSuccess = randomNumber(false);
-        if (isSuccess) {
-//            Lg.d("出现数字");
-            addNumberAdapter.notifyDataSetChanged();
-        } else {
-//            Lg.d("游戏结束");
-            BaseToast.makeTextShort("游戏结束");
+            // 上个循环是执行相加逻辑，相加之后，再执行空格处理
+            spaceIndex = 1;
+            for (int j = itemLine.length - 1; j > 0; ) {
+                if (j - spaceIndex < 0) {
+                    break;
+                }
+                int indexOne = itemLine[j];
+                int indexTwo = itemLine[j - spaceIndex];
+                AddNumberItem addNumberItemOne = numberList.get(indexOne);// 第一个item
+                AddNumberItem addNumberItemTwo = numberList.get(indexTwo);// 第二个
+                if (addNumberItemOne.getNumberEnum() != null) {
+                    j--;
+                    spaceIndex = 1;
+                } else if (addNumberItemOne.getNumberEnum() == null && addNumberItemTwo.getNumberEnum() == null) {
+                    spaceIndex++;
+                } else if (addNumberItemOne.getNumberEnum() == null && addNumberItemTwo.getNumberEnum() != null) {
+                    addNumberItemOne.setNumberEnum(addNumberItemTwo.getNumberEnum());
+                    addNumberItemTwo.setNumberEnum(null);
+                    j--;
+                    spaceIndex = 1;
+                }
+            }
         }
     }
 
@@ -234,9 +324,9 @@ public class AddNumberActivity extends TouchActivity
      * 3：
      *
      * @param isFirst 是否是第一次，如果是，产生两个
-     * @return 是否成功生成，如果没有，表示游戏结束
+     * @return 生成的位置索引，如果=-1，表示没有成功生成，游戏结束
      */
-    private boolean randomNumber(boolean isFirst)
+    private int randomNumber(boolean isFirst)
     {
         NumberEnum randomNumber;
         if (isFirst) {
@@ -258,16 +348,16 @@ public class AddNumberActivity extends TouchActivity
 
 //        Lg.d("出现在第" + row + "行");
         if (row == -1) {
-            return false;
+            return -1;
         }
         int index = randomColumn(row);
         Lg.d("出现在第" + index + "的位置");
         if (index == -1) {
-            return false;
+            return -1;
         }
         AddNumberItem addNumberItem = numberList.get(index);
         addNumberItem.setNumberEnum(randomNumber);
-        return true;
+        return index;
     }
 
     /**
@@ -340,6 +430,52 @@ public class AddNumberActivity extends TouchActivity
     }
 
     /**
+     * 游戏是否结束
+     *
+     * @return
+     */
+    private boolean isGameOver()
+    {
+        int[][] lineDirection = {{0, 1, 2, 3}, {4, 5, 6, 7}, {8, 9, 10, 11}, {12, 13, 14, 15}};
+        for (int i = 0; i < lineDirection.length; i++) {
+            int[] itemLines = lineDirection[i];
+            for (int j = 0; j < itemLines.length; j++) {
+                int index = itemLines[j];
+                if (numberList.get(index).getNumberEnum() == null) {
+                    // 有空位，继续游戏
+                    return false;
+                }
+                if (j < itemLines.length - 1) {
+                    int indexTwo = j + 1;
+                    if (numberList.get(index).getNumberEnum() == numberList.get(indexTwo).getNumberEnum()) {
+                        // 相邻的两个相同
+                        return false;
+                    }
+                }
+            }
+        }
+        lineDirection = new int[][]{{0, 4, 8, 12}, {1, 5, 9, 13}, {2, 6, 10, 14}, {3, 7, 11, 15}};
+        for (int i = 0; i < lineDirection.length; i++) {
+            int[] itemLines = lineDirection[i];
+            for (int j = 0; j < itemLines.length; j++) {
+                int index = itemLines[j];
+                if (numberList.get(index).getNumberEnum() == null) {
+                    // 有空位，继续游戏
+                    return false;
+                }
+                if (j < itemLines.length - 1) {
+                    int indexTwo = j + 1;
+                    if (numberList.get(index).getNumberEnum() == numberList.get(indexTwo).getNumberEnum()) {
+                        // 相邻的两个相同
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * 按照比例，随机产生是/否
      *
      * @param rate 比例0.0-1.0
@@ -352,5 +488,14 @@ public class AddNumberActivity extends TouchActivity
             return true;
         }
         return false;
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        // 销毁界面之前，保存上次记录
+        String lastGameStr = GsonUtils.gsonToString(numberList);
+        SPUtils.put(mContext, LAST_GAME_KEY, lastGameStr);
+        super.onDestroy();
     }
 }

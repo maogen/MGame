@@ -3,6 +3,7 @@ package com.maf.popupwindow;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.BitmapDrawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,20 +19,21 @@ import android.widget.PopupWindow;
  * 修改时间：2016/7/26 13:28
  * 修改备注：
  */
-public abstract class BasePopup extends PopupWindow {
+public abstract class BasePopup extends PopupWindow
+{
     protected Context context;
     /**
      * 布局
      */
     protected View view;
 
-    public BasePopup(Context context) {
+    public BasePopup(Context context)
+    {
         this.context = context;
         view = LayoutInflater.from(context).inflate(getViewId(), null);
         setContentView(view);
         setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        setFocusable(true);
         setFocusable(true);
         setOutsideTouchable(true);
         setBackgroundDrawable(new BitmapDrawable());
@@ -39,9 +41,11 @@ public abstract class BasePopup extends PopupWindow {
         initValue();
         initEvent();
 
-        setOnDismissListener(new OnDismissListener() {
+        setOnDismissListener(new OnDismissListener()
+        {
             @Override
-            public void onDismiss() {
+            public void onDismiss()
+            {
                 // 对话框消失是，背景还原
                 backgroundAlpha(1);
             }
@@ -75,10 +79,32 @@ public abstract class BasePopup extends PopupWindow {
      *
      * @param bgAlpha
      */
-    public void backgroundAlpha(float bgAlpha) {
+    public void backgroundAlpha(float bgAlpha)
+    {
         WindowManager.LayoutParams lp = ((Activity) context).getWindow().getAttributes();
         lp.alpha = bgAlpha; //0.0-1.0
         ((Activity) context).getWindow().setAttributes(lp);
     }
 
+    /**
+     * 在界面的最右侧显示对话框，同时界面背景半透明
+     *
+     * @param view 如果是BaseFragment，view = parentView
+     *             如果是BaseActivity，view = getWindow().getDecorView();
+     */
+    public void showPopupRight(View view)
+    {
+        showAtLocation(view, Gravity.RIGHT, 0, 0);
+        backgroundAlpha(0.5f);
+    }
+
+    /**
+     * 在按钮的下方显示对话框
+     *
+     * @param view 点击的View
+     */
+    public void showPopupDownView(View view)
+    {
+        showAsDropDown(view, 0, 0);
+    }
 }
