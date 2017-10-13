@@ -3,5 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingTop="30dp">
+
+    <Button
+        android:id="@+id/btn_game_one"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_yellow_one"
+        android:text="2048"
+        android:textColor="@color/white"
+        android:textSize="20dp" />
 </LinearLayout>
