@@ -22,6 +22,7 @@ public class MainActivity extends TouchActivity
 {
 
     private Button btnOne;
+    private Button btnTwo;
 
     @Override
     protected int getLayoutResId()
@@ -33,6 +34,7 @@ public class MainActivity extends TouchActivity
     protected void initView()
     {
         btnOne = (Button) findViewById(R.id.btn_game_one);
+        btnTwo = (Button) findViewById(R.id.btn_game_two);
     }
 
     @Override
@@ -44,6 +46,15 @@ public class MainActivity extends TouchActivity
             public void onClick(View v)
             {
                 Intent intent = new Intent(mContext, AddNumberActivity.class);
+                startActivity(intent);
+            }
+        });
+        btnTwo.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(mContext, TwentyOnePointActivity.class);
                 startActivity(intent);
             }
         });

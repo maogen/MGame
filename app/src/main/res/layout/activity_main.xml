@@ -15,4 +15,14 @@
         android:text="2048"
         android:textColor="@color/white"
         android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/btn_game_two"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/shape_yellow_one"
+        android:text="21点"
+        android:textColor="@color/white"
+        android:textSize="20dp" />
 </LinearLayout>
