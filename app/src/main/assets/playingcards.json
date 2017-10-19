@@ -17,7 +17,7 @@
   },
   {
     "name": "方块K",
-    "x": 1058,
+    "x": 988,
     "y": 0,
     "width": 463,
     "height": 690,
@@ -25,10 +25,394 @@
   },
   {
     "name": "黑桃K",
-    "x": 1686,
+    "x": 1483,
     "y": 0,
     "width": 463,
     "height": 690,
     "number": 13
+  },
+  {
+    "name": "梅花Q",
+    "x": 4,
+    "y": 730,
+    "width": 463,
+    "height": 690,
+    "number": 12
+  },
+  {
+    "name": "方块Q",
+    "x": 496,
+    "y": 730,
+    "width": 463,
+    "height": 690,
+    "number": 12
+  },
+  {
+    "name": "红心Q",
+    "x": 988,
+    "y": 730,
+    "width": 463,
+    "height": 690,
+    "number": 12
+  },
+  {
+    "name": "黑桃Q",
+    "x": 1483,
+    "y": 730,
+    "width": 463,
+    "height": 690,
+    "number": 12
+  },
+  {
+    "name": "梅花J",
+    "x": 4,
+    "y": 1460,
+    "width": 463,
+    "height": 690,
+    "number": 11
+  },
+  {
+    "name": "方块J",
+    "x": 496,
+    "y": 1460,
+    "width": 463,
+    "height": 690,
+    "number": 11
+  },
+  {
+    "name": "红心J",
+    "x": 988,
+    "y": 1460,
+    "width": 463,
+    "height": 690,
+    "number": 11
+  },
+  {
+    "name": "黑桃J",
+    "x": 1483,
+    "y": 1460,
+    "width": 463,
+    "height": 690,
+    "number": 11
+  },
+  {
+    "name": "红心A",
+    "x": 2,
+    "y": 2190,
+    "width": 463,
+    "height": 690,
+    "number": 1
+  },
+  {
+    "name": "梅花A",
+    "x": 496,
+    "y": 2185,
+    "width": 463,
+    "height": 690,
+    "number": 1
+  },
+  {
+    "name": "方块A",
+    "x": 990,
+    "y": 2185,
+    "width": 463,
+    "height": 690,
+    "number": 1
+  },
+  {
+    "name": "黑桃A",
+    "x": 1485,
+    "y": 2185,
+    "width": 463,
+    "height": 690,
+    "number": 1
+  },
+  {
+    "name": "方块10",
+    "x": 2,
+    "y": 2925,
+    "width": 463,
+    "height": 690,
+    "number": 10
+  },
+  {
+    "name": "黑桃10",
+    "x": 496,
+    "y": 2915,
+    "width": 463,
+    "height": 690,
+    "number": 10
+  },
+  {
+    "name": "红心10",
+    "x": 990,
+    "y": 2915,
+    "width": 463,
+    "height": 690,
+    "number": 10
+  },
+  {
+    "name": "梅花10",
+    "x": 1485,
+    "y": 2915,
+    "width": 463,
+    "height": 690,
+    "number": 10
+  },
+  {
+    "name": "方块9",
+    "x": 2,
+    "y": 3655,
+    "width": 463,
+    "height": 690,
+    "number": 9
+  },
+  {
+    "name": "红心9",
+    "x": 496,
+    "y": 3645,
+    "width": 463,
+    "height": 690,
+    "number": 9
+  },
+  {
+    "name": "梅花9",
+    "x": 990,
+    "y": 3645,
+    "width": 463,
+    "height": 690,
+    "number": 9
+  },
+  {
+    "name": "黑桃9",
+    "x": 1485,
+    "y": 3645,
+    "width": 463,
+    "height": 690,
+    "number": 9
+  },
+  {
+    "name": "黑桃8",
+    "x": 2,
+    "y": 4385,
+    "width": 463,
+    "height": 690,
+    "number": 8
+  },
+  {
+    "name": "梅花8",
+    "x": 496,
+    "y": 4375,
+    "width": 463,
+    "height": 690,
+    "number": 8
+  },
+  {
+    "name": "红心8",
+    "x": 990,
+    "y": 4375,
+    "width": 463,
+    "height": 690,
+    "number": 8
+  },
+  {
+    "name": "方块8",
+    "x": 1485,
+    "y": 4375,
+    "width": 463,
+    "height": 690,
+    "number": 8
+  },
+  {
+    "name": "方块7",
+    "x": 2,
+    "y": 5115,
+    "width": 463,
+    "height": 690,
+    "number": 7
+  },
+  {
+    "name": "红心7",
+    "x": 496,
+    "y": 5105,
+    "width": 463,
+    "height": 690,
+    "number": 7
+  },
+  {
+    "name": "梅花7",
+    "x": 990,
+    "y": 5105,
+    "width": 463,
+    "height": 690,
+    "number": 7
+  },
+  {
+    "name": "黑桃7",
+    "x": 1485,
+    "y": 5105,
+    "width": 463,
+    "height": 690,
+    "number": 7
+  },
+  {
+    "name": "黑桃6",
+    "x": 2,
+    "y": 5845,
+    "width": 463,
+    "height": 690,
+    "number": 6
+  },
+  {
+    "name": "梅花6",
+    "x": 496,
+    "y": 5835,
+    "width": 463,
+    "height": 690,
+    "number": 6
+  },
+  {
+    "name": "红心6",
+    "x": 990,
+    "y": 5835,
+    "width": 463,
+    "height": 690,
+    "number": 6
+  },
+  {
+    "name": "方块6",
+    "x": 1485,
+    "y": 5835,
+    "width": 463,
+    "height": 690,
+    "number": 6
+  },
+  {
+    "name": "方块5",
+    "x": 2,
+    "y": 6575,
+    "width": 463,
+    "height": 690,
+    "number": 5
+  },
+  {
+    "name": "红心5",
+    "x": 496,
+    "y": 6565,
+    "width": 463,
+    "height": 690,
+    "number": 5
+  },
+  {
+    "name": "梅花5",
+    "x": 990,
+    "y": 6565,
+    "width": 463,
+    "height": 690,
+    "number": 5
+  },
+  {
+    "name": "黑桃5",
+    "x": 1485,
+    "y": 6565,
+    "width": 463,
+    "height": 690,
+    "number": 5
+  },
+  {
+    "name": "黑桃4",
+    "x": 2,
+    "y": 7305,
+    "width": 463,
+    "height": 690,
+    "number": 4
+  },
+  {
+    "name": "梅花4",
+    "x": 496,
+    "y": 7295,
+    "width": 463,
+    "height": 690,
+    "number": 4
+  },
+  {
+    "name": "红心4",
+    "x": 990,
+    "y": 7295,
+    "width": 463,
+    "height": 690,
+    "number": 4
+  },
+  {
+    "name": "方块4",
+    "x": 1485,
+    "y": 7295,
+    "width": 463,
+    "height": 690,
+    "number": 4
+  },
+  {
+    "name": "方块3",
+    "x": 2,
+    "y": 8035,
+    "width": 463,
+    "height": 690,
+    "number": 3
+  },
+  {
+    "name": "黑桃3",
+    "x": 496,
+    "y": 8025,
+    "width": 463,
+    "height": 690,
+    "number": 3
+  },
+  {
+    "name": "梅花3",
+    "x": 990,
+    "y": 8025,
+    "width": 463,
+    "height": 690,
+    "number": 3
+  },
+  {
+    "name": "红心3",
+    "x": 1485,
+    "y": 8025,
+    "width": 463,
+    "height": 690,
+    "number": 3
+  },
+  {
+    "name": "黑桃2",
+    "x": 2,
+    "y": 8765,
+    "width": 463,
+    "height": 690,
+    "number": 2
+  },
+  {
+    "name": "梅花2",
+    "x": 496,
+    "y": 8755,
+    "width": 463,
+    "height": 690,
+    "number": 2
+  },
+  {
+    "name": "方块2",
+    "x": 990,
+    "y": 8755,
+    "width": 463,
+    "height": 690,
+    "number": 2
+  },
+  {
+    "name": "红心2",
+    "x": 1485,
+    "y": 8745,
+    "width": 463,
+    "height": 690,
+    "number": 2
   }
 ]

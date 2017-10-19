@@ -21,6 +21,7 @@ import com.zgmao.game.R;
 public class MainActivity extends TouchActivity
 {
 
+    private Button btnTest;
     private Button btnOne;
     private Button btnTwo;
 
@@ -33,6 +34,7 @@ public class MainActivity extends TouchActivity
     @Override
     protected void initView()
     {
+        btnTest = (Button) findViewById(R.id.btn_game_test);
         btnOne = (Button) findViewById(R.id.btn_game_one);
         btnTwo = (Button) findViewById(R.id.btn_game_two);
     }
@@ -40,6 +42,15 @@ public class MainActivity extends TouchActivity
     @Override
     protected void initEvent()
     {
+        btnTest.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(mContext, TestActivity.class);
+                startActivity(intent);
+            }
+        });
         btnOne.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -78,24 +89,24 @@ public class MainActivity extends TouchActivity
     @Override
     public void onMoveUp()
     {
-//        BaseToast.makeTextShort("向上滑");
+        BaseToast.makeTextShort("向上滑");
     }
 
     @Override
     public void onMoveDown()
     {
-//        BaseToast.makeTextShort("向下滑");
+        BaseToast.makeTextShort("向下滑");
     }
 
     @Override
     public void onMoveLeft()
     {
-//        BaseToast.makeTextShort("向左滑");
+        BaseToast.makeTextShort("向左滑");
     }
 
     @Override
     public void onMoveRight()
     {
-//        BaseToast.makeTextShort("向右滑");
+        BaseToast.makeTextShort("向右滑");
     }
 }

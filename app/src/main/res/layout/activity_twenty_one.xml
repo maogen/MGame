@@ -4,4 +4,69 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
+    <ImageView
+        android:id="@+id/image_rules"
+        android:layout_width="20dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:src="@mipmap/icon_main_ssbm" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+
+        <LinearLayout
+            style="@style/ScoreView">
+
+            <TextView
+                style="@style/ScoreTitle"
+                android:text="当前回合" />
+
+            <TextView
+                android:id="@+id/text_game_number"
+                style="@style/ScoreContent"
+                android:text="1/3" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="庄" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_player_one"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/color_main_text_gray" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_player_two"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="贤" />
+    </LinearLayout>
+
 </LinearLayout>

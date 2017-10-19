@@ -160,24 +160,28 @@ public class AddNumberActivity extends TouchActivity
     @Override
     public void onMoveUp()
     {
+        Lg.d("onMoveUp");
         showNumber(0);
     }
 
     @Override
     public void onMoveDown()
     {
+        Lg.d("onMoveDown");
         showNumber(1);
     }
 
     @Override
     public void onMoveLeft()
     {
+        Lg.d("onMoveLeft");
         showNumber(2);
     }
 
     @Override
     public void onMoveRight()
     {
+        Lg.d("onMoveRight");
         showNumber(3);
     }
 
@@ -206,17 +210,19 @@ public class AddNumberActivity extends TouchActivity
      */
     private void showNumber(int direction)
     {
-        addNumber(direction);
+        boolean isChange = addNumber(direction);
         addNumberAdapter.notifyDataSetChanged();
-        int successIndex = randomNumber(false);
-        if (successIndex != -1) {
-//            Lg.d("出现数字");
-            addNumberAdapter.notifyItemInserted(successIndex);
-        } else if (isGameOver()) {
-//            Lg.d("游戏结束");
-//            BaseToast.makeTextShort("游戏结束");
-            gameOverDialog.showDialog(getCurrentFocus());
+        if (isChange) {
+            // 移动位置了，添加一个数字
+            int successIndex = randomNumber(false);
+            if (successIndex != -1) {
+                addNumberAdapter.notifyItemInserted(successIndex);
+            } else if (isGameOver()) {
+                gameOverDialog.showDialog(getCurrentFocus());
+            }
         }
+
+
     }
 
     /**
@@ -225,12 +231,14 @@ public class AddNumberActivity extends TouchActivity
     private int spaceIndex;
 
     /**
-     * 合并数字
+     * 合并数字，是否合并，如果合并，才产生新的数字
      *
      * @param direction 方向 0-上；1-下；2-左；3-右
      */
-    private void addNumber(int direction)
+    private boolean addNumber(int direction)
     {
+        // 是否移动位置，如果如果移动，才产生新的数字
+        boolean isChange = false;
         int[][] lineDirection = {{0, 1, 2, 3}, {4, 5, 6, 7}, {8, 9, 10, 11}, {12, 13, 14, 15}};
         if (direction == 0) {
             // 上
@@ -283,6 +291,7 @@ public class AddNumberActivity extends TouchActivity
                     if (null != numberResult) {
                         addNumberItemOne.setNumberEnum(numberResult);
                         addNumberItemTwo.setNumberEnum(null);
+                        isChange = true;
                     }
                     // 两个数相加之后，直接跳过这两个，执行上上一个
                     number = number - 2;
@@ -312,9 +321,11 @@ public class AddNumberActivity extends TouchActivity
                     addNumberItemTwo.setNumberEnum(null);
                     j--;
                     spaceIndex = 1;
+                    isChange = true;
                 }
             }
         }
+        return isChange;
     }
 
     /**
@@ -351,7 +362,7 @@ public class AddNumberActivity extends TouchActivity
             return -1;
         }
         int index = randomColumn(row);
-        Lg.d("出现在第" + index + "的位置");
+//        Lg.d("出现在第" + index + "的位置");
         if (index == -1) {
             return -1;
         }
