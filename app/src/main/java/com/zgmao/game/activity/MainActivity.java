@@ -6,6 +6,7 @@ import android.widget.Button;
 
 import com.maf.activity.BaseActivity;
 import com.maf.utils.BaseToast;
+import com.zgmao.game.BuildConfig;
 import com.zgmao.game.R;
 
 /**
@@ -74,7 +75,9 @@ public class MainActivity extends TouchActivity
     @Override
     protected void initValue()
     {
-
+        if ("location".equals(BuildConfig.FLAVOR)) {
+            // 进入修改位置界面
+        }
     }
 
     @Override
